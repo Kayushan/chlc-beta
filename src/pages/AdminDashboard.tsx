@@ -17,7 +17,7 @@ import { supabase } from '../lib/supabase'
 import { getCurrentStaffUser } from '../lib/auth'
 import { Plus, Edit, Trash2, RotateCcw } from 'lucide-react'
 
-import { AIAssistant } from '../components/AIAssistant'
+import { ChatAssistant } from '../components/ChatAssistant'
 import { validateCommand, CommandValidationResult } from '../lib/validators'
 
 // Types for AI Planned Commands
@@ -525,12 +525,9 @@ export function AdminDashboard() {
         </div>
 
         {showAISchedulerChat && (
-          <AIAssistant
-            isOpen={showAISchedulerChat} onClose={() => setShowAISchedulerChat(false)} userRole="admin"
-            triggerMessage={null} onTriggerMessageProcessed={undefined}
-            onAICommandResponse={handleAICommandResponse}
-            onAISingleScheduleResponse={handleAISingleScheduleResponse}
-            teacherNames={getTeacherNames()}
+          <ChatAssistant
+            mode="modal"
+            onClose={() => setShowAISchedulerChat(false)}
           />
         )}
 

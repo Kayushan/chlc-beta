@@ -2,7 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Bot, Sparkles } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { useToast } from './Toast'
-import { AIAssistant } from './AIAssistant'
+import { ChatAssistant } from './ChatAssistant'
 import { useState, useEffect } from 'react'
 
 interface AIButtonProps {
@@ -98,13 +98,12 @@ export function AIButton({ userRole, triggerMessage, onTriggerMessageProcessed }
           </motion.button>
         )}
       </AnimatePresence>
-      <AIAssistant
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        userRole={userRole}
-        triggerMessage={triggerMessage}
-        onTriggerMessageProcessed={onTriggerMessageProcessed}
-      />
+      {isOpen && (
+        <ChatAssistant
+          mode="modal"
+          onClose={() => setIsOpen(false)}
+        />
+      )}
     </>
   )
 }
