@@ -7,6 +7,7 @@ import { supabase } from '../lib/supabase'
 import { getCurrentStaffUser } from '../lib/auth'
 import { Link } from 'react-router-dom';
 import { Calendar, CheckSquare, Coffee, LogOut as SignOut, FileText, Plus, Play, Square, XCircle, Briefcase } from 'lucide-react'
+import './TeacherDashboardMobile.css';
 import {
   getLeaveBalance,
   getTeacherLeaveApplications,
@@ -27,6 +28,7 @@ export function TeacherDashboard() {
     return `${greeting}, ${name || 'Teacher'}`;
   }
   const [activeTab, setActiveTab] = React.useState<'dashboard' | 'announcement'>('dashboard');
+  const [isTopSectionOpen, setIsTopSectionOpen] = React.useState(true);
   const { showToast } = useToast()
   const [todaySchedule, setTodaySchedule] = React.useState<any[]>([])
   const [activeSessions, setActiveSessions] = React.useState<any[]>([])
@@ -558,14 +560,17 @@ export function TeacherDashboard() {
 
         {/* Dashboard Tab Content */}
         {activeTab === 'dashboard' && (
-          <>
-            {/* Attendance Section */}
-            <div className="w-full max-w-4xl mx-auto mt-8">
-              <div className="bg-white rounded-lg shadow-sm border p-4 sm:p-6 flex flex-col min-w-0">
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 flex items-center">
+          <div className="flex flex-col gap-4 sm:gap-6">
+            <div className="top-section bg-white rounded-xl shadow-lg p-0">
+              <div className="top-section-header" onClick={() => setIsTopSectionOpen(!isTopSectionOpen)}>
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center">
                   <CheckSquare className="h-5 w-5 mr-2 text-orange-600" />
-                  Daily Attendance
+                  Daily Status
                 </h3>
+                <button className="text-orange-600">{isTopSectionOpen ? 'Collapse' : 'Expand'}</button>
+              </div>
+              <div className={`top-section-content ${isTopSectionOpen ? 'expanded' : ''} p-4`}>
+                {/* Attendance Section */}
                 <div className="flex flex-col gap-3">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2">
                     <span className="text-sm text-gray-700">
@@ -648,6 +653,18 @@ export function TeacherDashboard() {
                     </div>
                   )}
                 </div>
+
+                {/* Upcoming Class Section */}
+                <div className="mt-4 border-t border-gray-200 pt-4">
+                  <h4 className="text-sm font-semibold text-gray-700 mb-2">Next Class</h4>
+                  {todaySchedule.find(s => new Date(s.time) > new Date()) ? (
+                    <div className="text-sm text-gray-600">
+                      {todaySchedule.find(s => new Date(s.time) > new Date())?.time} - {todaySchedule.find(s => new Date(s.time) > new Date())?.level}
+                    </div>
+                  ) : (
+                    <div className="text-sm text-gray-500">No more classes today.</div>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -658,50 +675,40 @@ export function TeacherDashboard() {
                   <Calendar className="h-5 w-5 mr-2 text-orange-600" />
                   Today's Schedule ({currentDay})
                 </h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm text-left text-gray-700 dark:text-gray-200">
-                    <thead className="bg-gray-50 dark:bg-gray-800">
-                      <tr>
-                        <th className="px-3 py-2">Time</th>
-                        <th className="px-3 py-2">Class</th>
-                        <th className="px-3 py-2">Subject</th>
-                        <th className="px-3 py-2">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-800">
-                      {todaySchedule.length === 0 ? (
-                        <tr>
-                          <td colSpan={4} className="text-center py-4 text-gray-400 dark:text-gray-500">No classes scheduled for today.</td>
-                        </tr>
-                      ) : (
-                        todaySchedule.map(schedule => {
-                          const activeSession = getActiveSession(schedule)
-                          return (
-                            <tr key={schedule.id}>
-                              <td className="px-3 py-2">{schedule.time}</td>
-                              <td className="px-3 py-2">{schedule.level}</td>
-                              <td className="px-3 py-2">{schedule.subject}</td>
-                              <td className="px-3 py-2">
-                                {activeSession ? (
-                                  <button
-                                    onClick={() => handleEndClass(activeSession)}
-                                    disabled={submitting}
-                                    className="px-3 py-1 bg-red-600 dark:bg-red-700 text-white rounded hover:bg-red-700 dark:hover:bg-red-800 transition-colors text-xs"
-                                  >End Class</button>
-                                ) : (
-                                  <button
-                                    onClick={() => handleStartClass(schedule)}
-                                    disabled={!canStartClass(schedule) || submitting}
-                                    className="px-3 py-1 bg-emerald-600 dark:bg-emerald-700 text-white rounded hover:bg-emerald-700 dark:hover:bg-emerald-800 transition-colors text-xs disabled:opacity-50"
-                                  >Start Class</button>
-                                )}
-                              </td>
-                            </tr>
-                          )
-                        })
-                      )}
-                    </tbody>
-                  </table>
+                <div className="schedule-cards">
+                  {todaySchedule.length === 0 ? (
+                    <p className="text-center py-4 text-gray-400 dark:text-gray-500">No classes scheduled for today.</p>
+                  ) : (
+                    todaySchedule.map(schedule => {
+                      const activeSession = getActiveSession(schedule)
+                      return (
+                        <div key={schedule.id} className="schedule-card">
+                          <div className="time">{schedule.time}</div>
+                          <div className="class-details">
+                            <div className="class-info">
+                              <div className="class-level">{schedule.level}</div>
+                              <div className="subject">{schedule.subject}</div>
+                            </div>
+                            <div className="action">
+                              {activeSession ? (
+                                <button
+                                  onClick={() => handleEndClass(activeSession)}
+                                  disabled={submitting}
+                                  className="px-3 py-1 bg-red-600 dark:bg-red-700 text-white rounded hover:bg-red-700 dark:hover:bg-red-800 transition-colors text-xs"
+                                >End Class</button>
+                              ) : (
+                                <button
+                                  onClick={() => handleStartClass(schedule)}
+                                  disabled={!canStartClass(schedule) || submitting}
+                                  className="px-3 py-1 bg-emerald-600 dark:bg-emerald-700 text-white rounded hover:bg-emerald-700 dark:hover:bg-emerald-800 transition-colors text-xs disabled:opacity-50"
+                                >Start Class</button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })
+                  )}
                 </div>
               </div>
             </div>

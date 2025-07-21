@@ -1,0 +1,83 @@
+/* TeacherDashboardMobile.css */
+
+/* Card-based layout for the schedule */
+.schedule-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.schedule-card {
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px 0 rgba(80, 0, 120, 0.08), 0 1.5px 4px 0 rgba(80, 0, 120, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.schedule-card .time {
+  font-weight: bold;
+  color: #fb923c; /* orange-400 */
+}
+
+.schedule-card .class-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.schedule-card .class-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.schedule-card .class-level {
+  font-weight: 600;
+  color: #374151; /* gray-700 */
+}
+
+.schedule-card .subject {
+  color: #6b7280; /* gray-500 */
+}
+
+/* Combined Attendance and Upcoming Class Section */
+.top-section {
+  background-color: #fff;
+  border-radius: 1.25rem;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px 0 rgba(80, 0, 120, 0.08), 0 1.5px 4px 0 rgba(80, 0, 120, 0.04);
+  margin-bottom: 1.5rem;
+}
+
+.top-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.top-section-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.top-section-content.expanded {
+  max-height: 500px; /* Adjust as needed */
+}
+
+.top-section-header {
+  padding: 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb; /* gray-200 */
+}
+
+.top-section {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
