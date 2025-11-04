@@ -81,12 +81,6 @@ export function Layout({ children, title, isCreatorLayout = false }: LayoutProps
             </div>
             {/* Navigation Links */}
             <nav className="flex items-center space-x-2 sm:space-x-4">
-              <a
-                href="/upcoming-features"
-                className={darkMode ? 'text-xs sm:text-sm text-blue-400 hover:underline font-medium px-2 py-1 rounded transition-colors hover:bg-blue-900/20' : 'text-xs sm:text-sm text-blue-600 hover:underline font-medium px-2 py-1 rounded transition-colors hover:bg-blue-50'}
-              >
-                Upcoming Features
-              </a>
               {['admin', 'creator', 'head', 'teacher'].includes(user?.role) && (
                 <Link
                   to="/ai"

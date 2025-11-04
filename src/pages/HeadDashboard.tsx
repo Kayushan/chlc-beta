@@ -377,7 +377,14 @@ ${behaviorReports.length > 0 ? behaviorReports.slice(0, 5).map(report =>
   `• ${report.student_name} (${report.class_level}): ${report.incident.substring(0, 100)}${report.incident.length > 100 ? '...' : ''} - Action: ${report.action_taken.substring(0, 50)}${report.action_taken.length > 50 ? '...' : ''} [${report.teacher_name}, ${new Date(report.created_at).toLocaleDateString()}]`
 ).join('\n') : '• No recent behavior reports'}
 `
-    navigate('/school-report-viewer', { state: { reportContent: dataForReport } })
+    
+    try {
+      await navigator.clipboard.writeText(dataForReport)
+      showToast('Daily report copied to clipboard!', 'success')
+    } catch (error) {
+      showToast('Failed to copy report. Please try again.', 'error')
+      console.error('Clipboard error:', error)
+    }
   }
 
   const toggleReportExpansion = (reportId: string) => {
