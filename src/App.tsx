@@ -19,6 +19,7 @@ import { IntroSplash } from './components/IntroSplash'
 import { MaintenanceProvider, useMaintenanceStatus } from './contexts/MaintenanceContext'
 // ThemeProvider and ThemeApplicator imports are removed
 import { getCurrentStaffUser } from './lib/auth'
+import { getLegacyRoutes } from './legacy'
 
 
 // Reverted MaintenanceGuardContent
@@ -152,6 +153,9 @@ function App() {
 
             {/* Public Upcoming Features Page */}
             <Route path="/upcoming-features" element={<UpcomingFeatures />} />
+
+            {/* Legacy Routes (conditionally included based on VITE_ENABLE_LEGACY) */}
+            {getLegacyRoutes()}
 
             {/* Default redirect */}
             <Route path="/" element={<Navigate to="/login" replace />} />

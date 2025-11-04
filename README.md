@@ -220,5 +220,46 @@ Toggles global maintenance mode. Updates the system_flags table and UI state.
 
 ---
 
+## Legacy Archive System
+
+EduSync includes a safe legacy-archiving pattern that enables aggressive cleanup while preserving quick rollback capabilities.
+
+### Quick Start
+
+**Enable legacy features in development:**
+```bash
+export VITE_ENABLE_LEGACY=true
+npm run dev
+# Visit http://localhost:5173/legacy
+```
+
+**Production builds** automatically exclude legacy code (default: `VITE_ENABLE_LEGACY=false`).
+
+### Key Features
+
+- ✅ Deprecated code excluded from production bundles
+- ✅ Quick rollback without git operations
+- ✅ Manual verification of archived features
+- ✅ Automatic tree-shaking for smaller bundle sizes
+- ✅ CI/CD tests both build modes
+
+### Documentation
+
+- **[LEGACY_GUIDE.md](./LEGACY_GUIDE.md)** - Complete guide to using the legacy archive system
+- **[src/legacy/README.md](./src/legacy/README.md)** - Deprecation policy and restore steps
+- **[src/legacy/EXAMPLE.md](./src/legacy/EXAMPLE.md)** - Step-by-step examples
+
+### Usage
+
+When deprecating a feature:
+1. Move files to `src/legacy/`
+2. Register in `src/legacy/index.tsx`
+3. Test with `VITE_ENABLE_LEGACY=true`
+4. Remove after grace period (2-4 weeks)
+
+See the documentation for detailed instructions.
+
+---
+
 ## License
 This project is for Charis Hope Learning Centre. For other use, please contact the creator.
