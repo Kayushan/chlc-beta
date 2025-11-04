@@ -13,8 +13,6 @@ import { AllBehaviorReportsPage } from './pages/AllBehaviorReportsPage'
 import { AllNotifications } from './pages/AllNotifications'
 import { AIPage } from './pages/AIPage'
 import Maintenance from './pages/Maintenance'
-import ReportViewer from './pages/ReportViewer'
-import UpcomingFeatures from './pages/UpcomingFeatures'
 import { IntroSplash } from './components/IntroSplash'
 import { MaintenanceProvider, useMaintenanceStatus } from './contexts/MaintenanceContext'
 // ThemeProvider and ThemeApplicator imports are removed
@@ -147,12 +145,8 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="/school-report-viewer" element={<ReportViewer />} />
             {/* Maintenance Standalone Route (for direct access) */}
             <Route path="/maintenance" element={<Maintenance />} />
-
-            {/* Public Upcoming Features Page */}
-            <Route path="/upcoming-features" element={<UpcomingFeatures />} />
 
             {/* Legacy Routes (conditionally included based on VITE_ENABLE_LEGACY) */}
             {getLegacyRoutes()}
